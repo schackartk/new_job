@@ -48,7 +48,7 @@ def get_args() -> Args:
     parser.add_argument('-m',
                         '--mgr',
                         type=str,
-                        default=defaults.get('mgr', 'ocelote',
+                        default=defaults.get('mgr', 'ocelote'),
                         help='Job manager')
 
     parser.add_argument('-g',
