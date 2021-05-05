@@ -134,28 +134,6 @@ def main() -> None:
     if platform.system() != 'Windows':
         subprocess.run(['chmod', '+x', program], check=True)
 
-    if args.write_test:
-        test_dir = os.path.join(os.getcwd(), 'tests')
-        if not os.path.isdir(test_dir):
-            os.makedirs(test_dir)
-
-        basename = os.path.splitext(args.program)[0] + '_test.py'
-        test_file = os.path.join(test_dir, basename)
-        if os.path.isfile(test_file):
-            print(f'Will not overwrite "{test_file}"!')
-        else:
-            print(text_test(args.program), file=open(test_file, 'wt'))
-
-        makefile_text = [
-            '.PHONY: test', '', 'test:',
-            '\tpython3 -m pytest -xv --flake8 --pylint'
-        ]
-        makefile = 'Makefile'
-        if os.path.isfile(makefile):
-            print(f'Will not overwrite "{makefile}"!')
-        else:
-            print('\n'.join(makefile_text), file=open('Makefile', 'wt'))
-
     print(f'Done, see new script "{program}".')
 
 # --------------------------------------------------
