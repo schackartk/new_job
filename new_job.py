@@ -20,9 +20,9 @@ class Args(NamedTuple):
     """ Command-line arguments """
     job: str
     mgr: str
-    group: str
+    grp: str
     queue: str
-    ncpus: int
+    ncpu: int
     mem: int
     time: int
     email: str
@@ -54,7 +54,7 @@ def get_args() -> Args:
     parser.add_argument('-g',
                         '--grp',
                         type=str,
-                        default=defaults.get('group'),
+                        default=defaults.get('grp'),
                         help='Research Group')
 
     parser.add_argument('-q',
@@ -69,9 +69,9 @@ def get_args() -> Args:
                         default=defaults.get('ncpu', 12),
                         help='Number of CPUs')
 
-    parser.add_argument('-m',
+    parser.add_argument('-b',
                         '--mem',
-                        type=str,
+                        type=int,
                         default=defaults.get('mem', 64),
                         help='Memory in GB')
                             
@@ -96,10 +96,10 @@ def get_args() -> Args:
 
     args.job = args.job.strip().replace('-', '_')
 
-    if not args.program:
+    if not args.job:
         parser.error(f'Not a usable filename "{args.job}"')
 
-    return Args(job=args.program,
+    return Args(job=args.job,
                 mgr=args.mgr,
                 grp=args.grp,
                 queue=args.queue,
@@ -117,8 +117,8 @@ def main() -> None:
     args = get_args()
     job = args.job
 
-    if os.path.isfile(program) and not args.overwrite:
-        answer = input(f'"{program}" exists.  Overwrite? [yN] ')
+    if os.path.isfile(job) and not args.overwrite:
+        answer = input(f'"{job}" exists.  Overwrite? [yN] ')
         if not answer.lower().startswith('y'):
             sys.exit('Will not overwrite. Bye!')
     
@@ -132,26 +132,26 @@ def main() -> None:
     print(content, file=open(job, 'wt'), end='')
 
     if platform.system() != 'Windows':
-        subprocess.run(['chmod', '+x', program], check=True)
+        subprocess.run(['chmod', '+x', job], check=True)
 
-    print(f'Done, see new script "{program}".')
+    print(f'Done, see new script "{job}".')
 
 # --------------------------------------------------
 def ocelote_body(args: Args) -> str:
     """ Ocelote job template """
 
-    return f"""#!/usr/bin/env bash
+    return f"""#!/usr/bin/bash
 
-    #PBS -W group_list={args.grp}
-    #PBS -q {args.queue}
-    #PBS -l select=1:ncpus={args.ncpu}
-    #PBS -l walltime:{args.time}:00:00
-    #PBS -M {args.email}
-    #PBS -m bea
+#PBS -W group_list={args.grp}
+#PBS -q {args.queue}
+#PBS -l select=1:ncpus={args.ncpu}
+#PBS -l walltime:{args.time}:00:00
+#PBS -M {args.email}
+#PBS -m bea
 
-    # Load modules
+# Load modules
 
-    DIR=\"os.getcwd()\"
+DIR=\"{os.getcwd()}\"
 
 """
 
@@ -159,7 +159,29 @@ def ocelote_body(args: Args) -> str:
 def slurm_body(args: Args) -> str:
     """ SLURM job template """
 
-    return f"""
+    return f"""#!/usr/bin/bash
+
+### REQUIRED. Specify the PI group for this job
+#SBATCH --account={args.grp}
+### REQUIRED. Set the partition for your job.
+#SBATCH --partition={args.queue}
+### REQUIRED. Set the number of cores that will be used for this job.
+#SBATCH --ntasks={args.ncpu}
+### REQUIRED. Set the memory required for this job.
+#SBATCH --mem={args.mem}gb
+### REQUIRED. Specify the time required for this job, hhh:mm:ss
+#SBATCH --time={args.time}:00:00
+### Optional. Set the job name
+#SBATCH --job-name=
+### Optional. Request email when job begins and ends
+### SBATCH --mail-type=ALL
+### Optional. Specify email address to use for notification
+### SBATCH --mail-user={args.email}
+
+# Load modules
+
+DIR=\"{os.getcwd()}\"
+
 """
 
 # --------------------------------------------------
