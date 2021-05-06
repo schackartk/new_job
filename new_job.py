@@ -61,7 +61,7 @@ def get_args() -> Args:
                         '--queue',
                         type=str,
                         default=defaults.get('queue', 'Standard'),
-                        help='Queue prioirity')
+                        help='Queue priority')
 
     parser.add_argument('-n',
                         '--ncpu',
@@ -188,7 +188,7 @@ DIR=\"{os.getcwd()}\"
 
 # --------------------------------------------------
 def get_defaults(file_handle: Optional[TextIO]):
-    """ Get defaults from ~/.new.py """
+    """ Get defaults from ~/.new_job.py """
 
     defaults = {}
     if file_handle:
