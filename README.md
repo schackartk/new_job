@@ -1,4 +1,4 @@
-# new_job
+# new_job.py
 Python program to write a job template. Supports templates for PBS (Ocelote and El Gato) and SLURM (Puma).
 
 ## Description:
@@ -84,7 +84,7 @@ DIR="/home/ken/documents/research/new_job"
 ```
 ### Setting your own defaults
 
-The defaults can be changed by creating a "~/.new_job.py" configuration file with any of all of the following fields: mgr, grp, queue, ncpu, mem, time, email.
+The defaults can be changed by creating a "~/.new_job.py" configuration file with any or all of the following fields: mgr, grp, queue, ncpu, mem, time, email.
 
 For example, mine looks like:
 
