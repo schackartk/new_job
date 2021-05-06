@@ -140,7 +140,7 @@ def main() -> None:
 def pbs_body(args: Args) -> str:
     """ PBS job template """
 
-    return f"""#!/usr/bin/bash
+    return f"""#!/usr/bin/env bash
 
 #PBS -W group_list={args.grp}
 #PBS -q {args.queue}
@@ -159,7 +159,7 @@ DIR=\"{os.getcwd()}\"
 def slurm_body(args: Args) -> str:
     """ SLURM job template """
 
-    return f"""#!/usr/bin/bash
+    return f"""#!/usr/bin/env bash
 
 ### REQUIRED: 
 ### Specify the PI group for this job
