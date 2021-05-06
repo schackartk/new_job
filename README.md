@@ -1,7 +1,7 @@
 # new_job.py
 Python program to write a job template. Supports templates for PBS (Ocelote and El Gato) and SLURM (Puma).
 
-# Description:
+## Description:
 
 ```
 $ ./new_job.py -h
@@ -121,7 +121,7 @@ To make sure that this directory is on your `$PATH`, you can add this to your `.
 export PATH=$HOME/.local/bin:$PATH
 ```
 
-# Authorship and Achnowledgements:
+## Authorship:
 
 Author: Kenneth Schackart (schackartk1@gmail.com)
 
