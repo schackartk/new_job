@@ -1,7 +1,7 @@
 # new_job.py
 Python program to write a job template. Supports templates for PBS (Ocelote and El Gato) and SLURM (Puma).
 
-## Description:
+# Description:
 
 ```
 $ ./new_job.py -h
@@ -94,3 +94,11 @@ mgr=PBS
 grp=bhurwitz
 email=schackartk@email.arizona.edu
 ```
+
+By doing so, I do not need to use the `-e|--email`, or `-g|--grp` flags to include my information in the template by default.
+
+# Authorship and Achnowledgements:
+
+Author: Kenneth Schackart (schackartk1@gmail.com)
+
+Acknowledgement: The concept is adapted from [new-py](https://github.com/kyclark/new.py) by Ken Youens-Clark
