@@ -97,6 +97,30 @@ email=schackartk@email.arizona.edu
 
 By doing so, I do not need to use the `-e|--email`, or `-g|--grp` flags to include my information in the template by default.
 
+
+## Installation
+
+Firstly, you should clone this repository:
+
+```
+$ git clone git@github.com:schackartk/new_job.git
+```
+
+Then you can copy the `new_job.py` program to any directory currently in your `$PATH`.
+It's common to place programs into a directory like `/usr/local/bin`, but this often will require root priviliges.
+A common workaround is to create a writable directory in your `$HOME` where you can place programs.
+One option is to use `$HOME/.local` as the "prefix" for local software installations. You can copy the program there:
+
+```
+$ cp new_job.py ~/.local/bin
+```
+
+To make sure that this directory is on your `$PATH`, you can add this to your `.bash_profile` (or `.bashrc`) file:
+
+```
+export PATH=$HOME/.local/bin:$PATH
+```
+
 # Authorship and Achnowledgements:
 
 Author: Kenneth Schackart (schackartk1@gmail.com)
