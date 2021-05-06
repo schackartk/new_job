@@ -48,7 +48,7 @@ def get_args() -> Args:
     parser.add_argument('-m',
                         '--mgr',
                         type=str,
-                        default=defaults.get('mgr', 'ocelote'),
+                        default=defaults.get('mgr', 'SLURM'),
                         help='Job manager')
 
     parser.add_argument('-g',
@@ -122,8 +122,8 @@ def main() -> None:
         if not answer.lower().startswith('y'):
             sys.exit('Will not overwrite. Bye!')
     
-    if args.mgr.lower() == 'ocelote':
-        content = ocelote_body(args)
+    if args.mgr.lower() == 'pbs':
+        content = pbs_body(args)
     elif args.mgr.lower() == 'slurm':
         content = slurm_body(args)
     else:
@@ -137,8 +137,8 @@ def main() -> None:
     print(f'Done, see new script "{job}".')
 
 # --------------------------------------------------
-def ocelote_body(args: Args) -> str:
-    """ Ocelote job template """
+def pbs_body(args: Args) -> str:
+    """ PBS job template """
 
     return f"""#!/usr/bin/bash
 
