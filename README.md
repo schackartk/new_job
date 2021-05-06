@@ -72,7 +72,7 @@ $ cat bar.sh
 #SBATCH --time=24:00:00
 ### OPTIONAL:
 ### Set the job name
-#SBATCH --job-name=
+### SBATCH --job-name=
 ### Request email when job begins and ends
 ### SBATCH --mail-type=ALL
 ### Specify email address to use for notification
