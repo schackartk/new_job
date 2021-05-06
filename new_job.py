@@ -35,7 +35,7 @@ def get_args() -> Args:
 
     parser = argparse.ArgumentParser(
         prog='new_job.py',
-        description='Create a new job file',
+        description='Create a new job file template',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     rc_file = os.path.join(str(Path.home()), '.new_job.py')
@@ -161,21 +161,23 @@ def slurm_body(args: Args) -> str:
 
     return f"""#!/usr/bin/bash
 
-### REQUIRED. Specify the PI group for this job
+### REQUIRED: 
+### Specify the PI group for this job
 #SBATCH --account={args.grp}
-### REQUIRED. Set the partition for your job.
+### Set the partition for your job.
 #SBATCH --partition={args.queue}
-### REQUIRED. Set the number of cores that will be used for this job.
+### Set the number of cores that will be used for this job.
 #SBATCH --ntasks={args.ncpu}
-### REQUIRED. Set the memory required for this job.
+### Set the memory required for this job.
 #SBATCH --mem={args.mem}gb
-### REQUIRED. Specify the time required for this job, hhh:mm:ss
+### Specify the time required for this job, hhh:mm:ss
 #SBATCH --time={args.time}:00:00
-### Optional. Set the job name
-#SBATCH --job-name=
-### Optional. Request email when job begins and ends
+### OPTIONAL:
+### Set the job name
+### SBATCH --job-name=
+### Request email when job begins and ends
 ### SBATCH --mail-type=ALL
-### Optional. Specify email address to use for notification
+### Specify email address to use for notification
 ### SBATCH --mail-user={args.email}
 
 # Load modules
