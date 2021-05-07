@@ -67,7 +67,7 @@ def get_args() -> Args:
     parser.add_argument('-c',
                         '--ncpu',
                         type=int,
-                        default=defaults.get('ncpu', 12),
+                        default=defaults.get('ncpu', 14),
                         help='Number of CPUs')
 
     parser.add_argument('-n',
