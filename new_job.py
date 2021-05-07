@@ -169,7 +169,7 @@ def pbs_header(args: Args) -> str:
 ### PBS -o out_filename.txt
 ### Standard error filename
 ### PBS -e error_filename.txt
-### Email notifications (begin|end|abnormal end)
+### Email notifications (𝚋̲egin|𝚎̲nd|𝚊̲bnormal end)
 ### PBS -m bea
 ### Email addresss
 ### PBS -M {args.email}
