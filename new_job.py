@@ -23,6 +23,7 @@ class Args(NamedTuple):
     grp: str
     queue: str
     ncpu: int
+    node: str
     mem: int
     time: int
     email: str
@@ -63,11 +64,17 @@ def get_args() -> Args:
                         default=defaults.get('queue', 'Standard'),
                         help='Queue priority')
 
-    parser.add_argument('-n',
+    parser.add_argument('-c',
                         '--ncpu',
                         type=int,
                         default=defaults.get('ncpu', 12),
                         help='Number of CPUs')
+
+    parser.add_argument('-n',
+                        '--node',
+                        type=int,
+                        default=defaults.get('node', 1),
+                        help='Number of nodes')
 
     parser.add_argument('-b',
                         '--mem',
@@ -104,6 +111,7 @@ def get_args() -> Args:
                 grp=args.grp,
                 queue=args.queue,
                 ncpu=args.ncpu,
+                node=args.node,
                 mem=args.mem,
                 time=args.time,
                 email=args.email,
@@ -129,7 +137,7 @@ def main() -> None:
     else:
         sys.exit(f'Unrecognized job manager: "{args.mgr}".')
 
-    content = '#!usr/bin/env bash' + header + body()
+    content = '#!/bin/bash' + header + body()
     
     print(content, file=open(job, 'wt'), end='')
 
@@ -143,12 +151,29 @@ def pbs_header(args: Args) -> str:
     """ PBS job template """
 
     return f"""\n
+### REQUIRED
+### Research group/PI
 #PBS -W group_list={args.grp}
+### Job queue (standard|windfall|high_pri)
 #PBS -q {args.queue}
-#PBS -l select=1:ncpus={args.ncpu}
-#PBS -l walltime:{args.time}:00:00
-#PBS -M {args.email}
-#PBS -m bea
+### Number of nodes
+### Number of CPUs (fraction of 28 e.g. 7, 14, 21)
+### Amount of memory
+#PBS -l select={args.node}:ncpus={args.ncpu}:mem={args.mem}gb
+### Job walltime
+#PBS -l walltime={args.time}:00:00
+### OPTIONAL
+### Job name
+### PBS -N JobName
+### Standard output filename
+### PBS -o out_filename.txt
+### Standard error filename
+### PBS -e error_filename.txt
+### Email notifications (begin|end|abnormal end)
+### PBS -m bea
+### Email addresss
+### PBS -M {args.email}
+
 """
 
 # --------------------------------------------------
@@ -157,22 +182,28 @@ def slurm_header(args: Args) -> str:
 
     return f"""\n
 ### REQUIRED: 
-### Specify the PI group for this job
+### Research group/PI
 #SBATCH --account={args.grp}
-### Set the partition for your job.
+### Job queue (standard|windfall|high_pri)
 #SBATCH --partition={args.queue}
-### Set the number of cores that will be used for this job.
+### Number of nodes
+#SBATCH --nodes={args.node}
+### Number of CPUs
 #SBATCH --ntasks={args.ncpu}
-### Set the memory required for this job.
+### Amount of memory
 #SBATCH --mem={args.mem}gb
-### Specify the time required for this job, hhh:mm:ss
+### Job walltime
 #SBATCH --time={args.time}:00:00
 ### OPTIONAL:
-### Set the job name
-### SBATCH --job-name=
-### Request email when job begins and ends
+### Job name
+### SBATCH --job-name=JobName
+### Standard output filename
+### SBATCH -o out_filename.txt
+### Standard error filename
+### SBATCH -e error_filename.txt
+### Email notifications (BEGIN|END|FAIL|ALL)
 ### SBATCH --mail-type=ALL
-### Specify email address to use for notification
+### Email addresss
 ### SBATCH --mail-user={args.email}
 """
 
