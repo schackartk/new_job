@@ -10,7 +10,7 @@ usage: new_job.py [-h] [-m MGR] [-g GRP] [-q QUEUE] [-c NCPU] [-n NODE] [-b MEM]
 Create a new job file template
 
 positional arguments:
-  job                   Job name
+  job                   Job file name
 
 optional arguments:
   -h, --help            show this help message and exit
