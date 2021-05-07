@@ -61,7 +61,7 @@ def get_args() -> Args:
     parser.add_argument('-q',
                         '--queue',
                         type=str,
-                        default=defaults.get('queue', 'Standard'),
+                        default=defaults.get('queue', 'standard'),
                         help='Queue priority')
 
     parser.add_argument('-c',
