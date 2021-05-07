@@ -123,11 +123,13 @@ def main() -> None:
             sys.exit('Will not overwrite. Bye!')
     
     if args.mgr.lower() == 'pbs':
-        content = pbs_body(args)
+        header = pbs_header(args)
     elif args.mgr.lower() == 'slurm':
-        content = slurm_body(args)
+        header = slurm_header(args)
     else:
-        sys.exit(f'Unrecognized job manager: {args.mgr}.')
+        sys.exit(f'Unrecognized job manager: "{args.mgr}".')
+
+    content = '#!usr/bin/env bash' + header + body()
     
     print(content, file=open(job, 'wt'), end='')
 
@@ -137,30 +139,23 @@ def main() -> None:
     print(f'Done, see new script "{job}".')
 
 # --------------------------------------------------
-def pbs_body(args: Args) -> str:
+def pbs_header(args: Args) -> str:
     """ PBS job template """
 
-    return f"""#!/usr/bin/env bash
-
+    return f"""\n
 #PBS -W group_list={args.grp}
 #PBS -q {args.queue}
 #PBS -l select=1:ncpus={args.ncpu}
 #PBS -l walltime:{args.time}:00:00
 #PBS -M {args.email}
 #PBS -m bea
-
-# Load modules
-
-DIR=\"{os.getcwd()}\"
-
 """
 
 # --------------------------------------------------
-def slurm_body(args: Args) -> str:
+def slurm_header(args: Args) -> str:
     """ SLURM job template """
 
-    return f"""#!/usr/bin/env bash
-
+    return f"""\n
 ### REQUIRED: 
 ### Specify the PI group for this job
 #SBATCH --account={args.grp}
@@ -179,9 +174,23 @@ def slurm_body(args: Args) -> str:
 ### SBATCH --mail-type=ALL
 ### Specify email address to use for notification
 ### SBATCH --mail-user={args.email}
+"""
 
-# Load modules
+# --------------------------------------------------
+def body() -> str:
+    """ Example body"""
 
+    return f"""
+# Source ~/.bashrc for aliases and $PATH
+source ~/.bashrc
+
+# Activate a conda environment
+# source activate my_env
+
+# Load any necessary modules
+# module load my_modules
+
+# Get current directory to help establish paths
 DIR=\"{os.getcwd()}\"
 
 """
