@@ -15,9 +15,9 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -m MGR, --mgr MGR     Job manager (default: SLURM)
-  -g GRP, --grp GRP     Research Group (default: None)
+  -g GRP, --grp GRP     Research group (default: None)
   -q QUEUE, --queue QUEUE
-                        Queue prioirity (default: standard)
+                        Queue priority (default: standard)
   -c NCPU, --ncpu NCPU  Number of CPUs (default: 14)
   -n NODE, --node NODE  Number of nodes (default: 1)
   -b MEM, --mem MEM     Memory in GB (default: 64)
