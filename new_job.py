@@ -23,7 +23,7 @@ class Args(NamedTuple):
     grp: str
     queue: str
     ncpu: int
-    node: str
+    node: int
     mem: int
     time: int
     email: str
@@ -157,10 +157,10 @@ def pbs_header(args: Args) -> str:
 ### Job queue (standard|windfall|high_pri)
 #PBS -q {args.queue}
 ### Number of nodes
-### Number of CPUs (fraction of 28 e.g. 7, 14, 21)
-### Amount of memory
+### Number of CPUs per node (fraction of 28 e.g. 7, 14, 21)
+### Amount of memory per node (<= 168 on ocelote)
 #PBS -l select={args.node}:ncpus={args.ncpu}:mem={args.mem}gb
-### Job walltime
+### Job walltime (HHH:MM:SS) (<=240 hrs)
 #PBS -l walltime={args.time}:00:00
 ### OPTIONAL
 ### Job name
@@ -185,14 +185,15 @@ def slurm_header(args: Args) -> str:
 ### Research group/PI
 #SBATCH --account={args.grp}
 ### Job queue (standard|windfall|high_pri)
+### If windfall, omit --account
 #SBATCH --partition={args.queue}
 ### Number of nodes
 #SBATCH --nodes={args.node}
-### Number of CPUs
+### Number of CPUs per node 
 #SBATCH --ntasks={args.ncpu}
-### Amount of memory
+### Amount of memory per node
 #SBATCH --mem={args.mem}gb
-### Job walltime
+### Job walltime (HHH:MM:SS)
 #SBATCH --time={args.time}:00:00
 ### OPTIONAL:
 ### Job name
