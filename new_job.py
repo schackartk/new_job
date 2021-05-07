@@ -44,7 +44,7 @@ def get_args() -> Args:
     username = os.getenv('USER') or 'Anonymous'
     hostname = os.getenv('HOSTNAME') or 'localhost'
 
-    parser.add_argument('job', help='Job name', type=str)
+    parser.add_argument('job', help='Job file name', type=str)
 
     parser.add_argument('-m',
                         '--mgr',
