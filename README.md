@@ -17,7 +17,7 @@ optional arguments:
   -m MGR, --mgr MGR     Job manager (default: SLURM)
   -g GRP, --grp GRP     Research Group (default: None)
   -q QUEUE, --queue QUEUE
-                        Queue prioirity (default: Standard)
+                        Queue prioirity (default: standard)
   -c NCPU, --ncpu NCPU  Number of CPUs (default: 14)
   -n NODE, --node NODE  Number of nodes (default: 1)
   -b MEM, --mem MEM     Memory in GB (default: 64)
@@ -44,7 +44,7 @@ $ head foo.sh
 ### Research group/PI
 #PBS -W group_list=None
 ### Job queue (standard|windfall|high_pri)
-#PBS -q Standard
+#PBS -q standard
 ### Number of nodes
 ### Number of CPUs (fraction of 28 e.g. 7, 14, 28)
 ### Amount of memory
@@ -62,7 +62,7 @@ $ head bar.sh
 ### Research group/PI
 #SBATCH --account=bhurwitz
 ### Job queue (standard|windfall|high_pri)
-#SBATCH --partition=Standard
+#SBATCH --partition=standard
 ### Number of nodes
 #SBATCH --nodes=1
 ### Number of CPUs 
